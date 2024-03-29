@@ -1,4 +1,4 @@
-package infrastrucutre.repository.entity;
+package infrastructure.repository.entity;
 
 import domain.Candidate;
 import jakarta.persistence.Column;

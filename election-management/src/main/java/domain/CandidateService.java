@@ -1,8 +1,8 @@
 package domain;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class CandidateService {
@@ -13,6 +13,7 @@ public class CandidateService {
         this.candidateRepository = candidateRepository;
     }
 
+    @Transactional
     public void save(Candidate candidate) {
         candidateRepository.save(candidate);
     }
