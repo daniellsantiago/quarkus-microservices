@@ -8,6 +8,7 @@ public record Candidate(
   String familyName,
   String email,
   Optional<String> phone,
-  Optional<String> jobTitle
+  Optional<String> jobTitle,
+  Optional<String> photo
 ) {
 }
