@@ -18,6 +18,51 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   # APPLICATIONS
+  election-management:
+    extends:
+      file: common.yml
+      service: quarkus
+    build:
+      context: ./election-management
+      # dockerfile: src/main/docker/Dockerfile.native
+      dockerfile: src/main/docker/Dockerfile.jvm
+    image: daniellsantiago/election-management:${TAG:-1.0.0}
+    environment:
+      - QUARKUS_DATASOURCE_USERNAME=election-management-user
+      - QUARKUS_DATASOURCE_PASSWORD=election-management-password
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:otel:mariadb://database:3306/election-management
+      - QUARKUS_REDIS_HOSTS=redis://caching:6379
+    labels:
+      - traefik.http.routers.election-management.rule=Host(`vote.localhost`) && PathPrefix(`/api`)
+      - traefik.http.routers.election-management.entrypoints=web
+
+  voting-app:
+    extends:
+      file: common.yml
+      service: quarkus
+    build:
+      context: ./voting-app
+      # dockerfile: src/main/docker/Dockerfile.native
+      dockerfile: src/main/docker/Dockerfile.jvm
+    image: daniellsantiago/voting-app:${TAG:-1.0.0}
+    environment:
+      - QUARKUS_REDIS_HOSTS=redis://caching:6379
+    labels:
+      - traefik.http.routers.voting-app.rule=Host(`vote.localhost`) && PathPrefix(`/api/voting`)
+      - traefik.http.routers.voting-app.entrypoints=web
+
+  result-app:
+    extends:
+      file: common.yml
+      service: quarkus
+    build:
+      context: ./result-app
+      # dockerfile: src/main/docker/Dockerfile.native
+      dockerfile: src/main/docker/Dockerfile.jvm
+    image: daniellsantiago/result-app:${TAG:-1.0.0}
+    labels:
+      - traefik.http.routers.result-app.rule=Host(`vote.localhost`) && Path(`/`)
+      - traefik.http.routers.result-app.entrypoints=web
 
   # DATABASE - https://quarkus.io/guides/datasource
 
