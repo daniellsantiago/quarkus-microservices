@@ -2,11 +2,14 @@ package infrastructure.resource;
 
 import api.CandidateApi;
 import api.dto.in.CreateCandidate;
+import api.dto.out.CandidatePersonalInfo;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import java.util.List;
 import org.jboss.resteasy.reactive.ResponseStatus;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
 
@@ -24,5 +27,11 @@ public class CandidateResource {
     @ResponseStatus(StatusCode.CREATED)
     public void create(CreateCandidate dto) {
         api.create(dto);
+    }
+
+    @GET
+    @ResponseStatus(StatusCode.OK)
+    public List<CandidatePersonalInfo> listCandidatesPersonalInfo() {
+        return api.findCandidatesPersonalInfo();
     }
 }
