@@ -10,6 +10,7 @@ import io.quarkus.redis.datasource.pubsub.PubSubCommands;
 import io.quarkus.redis.datasource.sortedset.ScoreRange;
 import io.quarkus.redis.datasource.sortedset.SortedSetCommands;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.util.List;
 import java.util.Map;
 
 @ApplicationScoped
@@ -51,5 +52,10 @@ public class RedisElectionRepository implements ElectionRepository {
           .toArray(Map.Entry[]::new);
 
         return new Election(election.id(), Map.ofEntries(map));
+    }
+
+    @Override
+    public List<Election> findAll() {
+        throw new UnsupportedOperationException();
     }
 }
