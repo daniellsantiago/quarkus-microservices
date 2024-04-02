@@ -11,9 +11,9 @@ APP_VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' 
 ./mvnw versions:set -DnextSnapshot
 
 git add pom.xml
-git commit -m "cicd: bump version ${APP}:${APP_VERSION}"
+git commit -m "cicd: bump version ${APP}:${APP_VERSION}" --no-verify
 
 cd "$ROOT"
-TAG=$APP_VERSION docker compose build --no-cache "$APP"
+TAG=$APP_VERSION docker-compose build --no-cache "$APP"
 
 docker images "daniellsantiago/${APP}"
